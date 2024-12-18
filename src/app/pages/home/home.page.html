@@ -1,0 +1,111 @@
+<ion-header [translucent]="true"> 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Főoldal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content justify-content-center align-items-center>
+  <ion-accordion-group>
+    <ion-accordion value="filters" #filtersAccordion>
+      <ion-item slot="header">
+        <ion-label>Keresési szűrők</ion-label>
+      </ion-item>
+      <div class="search-filters" slot="content">
+        <ion-item>
+          <ion-label position="floating">Termék neve</ion-label>
+          <ion-input [(ngModel)]="searchCriteria.name"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Kategória</ion-label>
+          <ion-input [(ngModel)]="searchCriteria.category"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Árkategória</ion-label>
+          <ion-range dualKnobs="true" [pin]="true" [(ngModel)]="searchCriteria.priceRange" min="0" max="10000" step="100">
+            <ion-label slot="start">0</ion-label>
+            <ion-label slot="end">10000</ion-label>
+          </ion-range>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Méret</ion-label>
+          <ion-select [(ngModel)]="searchCriteria.size" multiple="true">
+            <ion-select-option *ngFor="let size of sizes" [value]="size">{{ size }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Szín</ion-label>
+          <ion-input [(ngModel)]="searchCriteria.color"></ion-input>
+        </ion-item>
+
+        <ion-button expand="full" (click)="applyFilters()">Szűrők alkalmazása</ion-button>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let product of filteredProducts" size-xs="12" size-sm="6" size-md="6" size-lg="4" size-xl="4">
+        <ion-card>
+          <img [alt]="product.name" [src]="product.imageUrl" (click)="toProductDetails(product.id)" />
+
+          <ion-card-header>
+            <ion-card-title>{{ product.name }}</ion-card-title>
+            <ion-card-subtitle>{{ product.category }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <strong>{{ product.price }} HUF</strong>
+
+            <ion-item>
+              <div class="chips">
+                <ion-chip
+                  *ngFor="let size of getAvailableSizes(product)"
+                  [color]="product.stock[size] > 0 ? 'primary' : 'medium'"
+                  [disabled]="product.stock[size] === 0"
+                  [outline]="product.stock[size] > 0 && selectedSize[product.id] !== size"
+                  (click)="selectSize(product, size)"
+                  [class.selected]="selectedSize[product.id] === size">
+                  {{ size }}
+                </ion-chip>
+              </div>
+            </ion-item>
+
+            <p>Szín: {{ product.color }}</p>
+
+            <div *ngIf="loggedInUserRole === 'admin'" class="stock-chips">
+              <ion-chip
+                *ngFor="let size of getAvailableSizes(product)"
+                [color]="product.stock[size] > 0 ? 'success' : 'danger'"
+                [disabled]="product.stock[size] === 0">
+                <ion-label>
+                  {{ size }}: {{ product.stock[size] }}
+                </ion-label>
+              </ion-chip>
+            </div>
+          </ion-card-content>
+
+          <div class="product-actions">
+            <ion-button fill="clear" (click)="showConfirmationModal(product, 'buy')" [disabled]="!loggedInUser">
+              <ion-icon name="cart"></ion-icon>
+            </ion-button>
+
+            <ion-button fill="clear" *ngIf="loggedInUserRole === 'admin'" (click)="onModifyClick(product)">
+              <ion-icon name="create"></ion-icon>
+            </ion-button>
+
+            <ion-button fill="clear" *ngIf="loggedInUserRole === 'admin'" (click)="showConfirmationModal(product, 'delete')">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

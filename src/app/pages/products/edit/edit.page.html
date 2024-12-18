@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Termék módosítása</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="form-container">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit('modify')">
+
+      <ion-item>
+        <ion-label position="stacked">Termék Neve</ion-label>
+        <ion-input formControlName="name" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Leírás</ion-label>
+        <ion-input formControlName="description" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Ár</ion-label>
+        <ion-input formControlName="price" type="number" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Kategória</ion-label>
+        <ion-input formControlName="category" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Szín</ion-label>
+        <ion-input formControlName="color" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Kép</ion-label>
+        <input type="file" (change)="onImageSelected($event)" accept="image/*" />
+        <ion-text *ngIf="imageUrl">
+          <p>Jelenlegi kép:</p>
+          <img [src]="imageUrl" alt="Product Image" height="100"/>
+        </ion-text>
+      </ion-item>
+
+      <div formGroupName="stock">
+        <ion-item *ngFor="let size of sizes; let i = index" class="stock-item">
+          <div class="stock-input-wrapper">
+            <ion-label position="stacked">{{ size }} készleten</ion-label>
+            <ion-input [formControlName]="size" type="number" [value]="0"></ion-input>
+          </div>
+          <ion-button slot="end" (click)="removeSize(i)" color="danger" fill="clear">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label position="stacked">Felvenni kívánt méret</ion-label>
+        <ion-select [(ngModel)]="customSize" [ngModelOptions]="{standalone: true}" placeholder="Válasszon méretet">
+          <ion-select-option *ngFor="let size of ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL']" [value]="size">
+            {{ size }}
+          </ion-select-option>
+        </ion-select>
+        <ion-button slot="end" (click)="addCustomSize()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-button type="submit" [disabled]="!productForm.valid" expand="full">Módosítás</ion-button>
+    </form>
+  </div>
+</ion-content>

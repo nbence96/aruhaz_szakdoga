@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Bejelentkezés</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <form [formGroup]="form">
+      <ion-item lines="full">
+        <ion-input formControlName="email" label="Email" label-placement="floating" type="email" placeholder="email@domain.com" clearInput pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-input formControlName="password" label="Jelszó" label-placement="floating" type="password" clearInput></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" (click)="login(form)" [disabled]="form.invalid" id="login">Bejelentkezés</ion-button>
+      <ion-item lines="full">
+        <ion-label>Még nincs regisztrálva?</ion-label>
+        <ion-button expand="block" routerDirection="root" routerLink="/signup" lines="none" detail="false">Regisztráció</ion-button>
+      </ion-item>
+    </form>
+    
+  </div>
+
+  <ion-toast
+    position="top"
+    [isOpen]="isToastOpen"
+    message="A megadott email cím vagy jelszó nem megfelelő!"
+    [duration]="3000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
+</ion-content>

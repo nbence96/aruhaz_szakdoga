@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ actionTitle }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="dismiss(false)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="modal-container">
+    <ion-icon [name]="iconName" class="modal-icon" [color]="iconColor"></ion-icon>
+    <h2>{{ message }}</h2>
+    <p>{{ detailedMessage }}</p>
+
+    <div class="modal-buttons">
+      <ion-button expand="block" color="danger" (click)="dismiss(true)">Confirm</ion-button>
+      <ion-button expand="block" color="light" (click)="dismiss(false)">Cancel</ion-button>
+    </div>
+  </div>
+</ion-content>

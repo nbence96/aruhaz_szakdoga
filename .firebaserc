@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "iruhabolt": {
+      "hosting": {
+        "app": [
+          "iruhabolt"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "iruhabolt"
+  }
+}

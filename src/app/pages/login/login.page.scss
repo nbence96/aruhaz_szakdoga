@@ -1,0 +1,20 @@
+ion-item {
+  --border-color: black;
+  --border-radius: 8px;
+  margin-bottom: 10px;
+
+  ion-label {
+    font-size: smaller;
+  }
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  height: 100%; 
+}
+
+form {
+  max-width: 600px;
+  width: 100%;
+}

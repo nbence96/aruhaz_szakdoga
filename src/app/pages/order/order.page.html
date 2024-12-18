@@ -1,0 +1,83 @@
+<script src="https://js.stripe.com/v3/"></script>
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Rendelés</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="order-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Rendelés összegzése</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let item of orderItems">
+            <ion-thumbnail slot="start">
+              <img [src]="item.imageUrl" alt="{{ item.name }}">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ item.name }}</h2>
+              <p>Méret: {{ item.size }}</p>
+            </ion-label>
+            <div class="item-summary">
+              <p>{{ item.quantity }} x {{ item.price }} HUF</p>
+            </div>
+          </ion-item>
+        </ion-list>
+        <div class="total-price">
+          Végösszeg: {{ totalPrice }} HUF
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <form [formGroup]="orderForm">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Szállítási információk</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label position="stacked">Név</ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Cím</ion-label>
+            <ion-input formControlName="address"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Telefonszám</ion-label>
+            <ion-input formControlName="phoneNumber" type="tel" placeholder="+3630-123-4567"></ion-input>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Fizetési mód</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-radio-group formControlName="paymentMethod">
+            <ion-item>
+              <ion-label>Bankkártya</ion-label>
+              <ion-radio slot="start" value="credit card"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Utánvét</ion-label>
+              <ion-radio slot="start" value="cash on delivery"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="block" color="primary" (click)="confirmOrder()" [disabled]="!isFormValid()">
+        Rendelés megerősítése
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

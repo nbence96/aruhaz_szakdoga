@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Kosár</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="centered-content">
+    <ion-list *ngIf="(cartItems$ | async)?.length; else emptyCart">
+      <ion-item *ngFor="let item of cartItems$ | async">
+        <ion-thumbnail slot="start">
+          <img [src]="item.imageUrl" alt="{{ item.name }}">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ item.name }}</h2>
+          <p>{{ item.price }} HUF</p>
+          <p>Méret: {{ item.size }}</p>
+        </ion-label>
+        <div class="quantity-controls">
+          <ion-button fill="clear" 
+                      (click)="decreaseQuantity(item)" 
+                      [disabled]="item.quantity <= 1">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+          <span class="quantity">{{ item.quantity }}</span>
+          <ion-button fill="clear" 
+                      (click)="increaseQuantity(item)" 
+                      [disabled]="item.quantity >= getMaxQuantity(item)">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <ion-button fill="clear" color="danger" (click)="removeFromCart(item)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #emptyCart>
+      <div class="empty-cart-message">
+        <p>A kosár üres.</p>
+      </div>
+    </ng-template>
+
+    <div class="cart-footer" *ngIf="(cartItems$ | async)?.length">
+      <div class="total-price">
+        Végösszeg: {{ totalPrice }} HUF
+      </div>
+      <ion-button expand="block" 
+                  class="order-button" 
+                  color="primary"
+                  [disabled]="!totalPrice"
+                  (click)="onCheckout()">
+        Megrendelés
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

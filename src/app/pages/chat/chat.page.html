@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Online aszisztens</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="chat-container">
+    <div class="chat-list">
+      <ion-card *ngFor="let message of messages; let i = index" [ngClass]="{'user-message': i % 2 === 0, 'ai-message': i % 2 !== 0}">
+        <ion-card-content>{{ message }}</ion-card-content>
+      </ion-card>
+    </div>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-input [(ngModel)]="userInput" placeholder="Tedd fel a kérdésed..."></ion-input>
+        <ion-button (click)="sendMessage()" [disabled]="isLoading">Küldés</ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </div>
+</ion-content>

@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Rendelések</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ng-container *ngIf="orders.length > 0; else noOrders">
+          <ion-accordion-group>
+            <ion-accordion *ngFor="let order of orders">
+              <ion-item slot="header" [ngClass]="{'fulfilled': order.orderFulfilled, 'not-fulfilled': !order.orderFulfilled}">
+                <ion-label>
+                  <ion-icon name="document-text-outline"></ion-icon>
+                  Rendelés ID: {{ order.id }} - Végösszeg: {{ order.totalPrice | currency:'HUF' }}
+                </ion-label>
+                <ion-button 
+                  slot="end" 
+                  *ngIf="userRole === 'admin'" 
+                  (click)="toggleOrderFulfilled(order)" 
+                  [color]="order.orderFulfilled ? 'success' : 'primary'" 
+                  fill="solid" 
+                  shape="round"
+                  [ngClass]="{'fulfilled-button': order.orderFulfilled}">
+                  {{ order.orderFulfilled ? 'Mark as Unfulfilled' : 'Mark as Fulfilled' }}
+                </ion-button>
+              </ion-item>
+              <div slot="content" class="order-details">
+                <p><ion-icon name="card-outline"></ion-icon> <strong>Fizetési mód:</strong> {{ order.paymentMethod }}</p>
+                <p><ion-icon name="checkmark-circle-outline"></ion-icon> <strong>Fizetve:</strong> {{ order.isPaid ? 'Igen' : 'Nem' }}</p>
+                <p><ion-icon name="checkmark-done-outline"></ion-icon> <strong>Rendelés teljesítve:</strong> {{ order.orderFulfilled ? 'Igen' : 'Nem' }}</p>
+                <p><ion-icon name="calendar-outline"></ion-icon> <strong>Leadási idő:</strong> {{ order.createdAt.toDate() | date:'medium' }}</p>
+                <p><ion-icon name="refresh-outline"></ion-icon> <strong>Frissítve:</strong> {{ order.updatedAt ? (order.updatedAt.toDate() | date:'medium') : 'még nem volt frissítve' }}</p>
+                <p><strong>Szállítási információk:</strong></p>
+                <ul>
+                  <li><ion-icon name="person-outline"></ion-icon> Név: {{ order.shippingInfo.name }}</li>
+                  <li><ion-icon name="home-outline"></ion-icon> Cím: {{ order.shippingInfo.address }}</li>
+                  <li><ion-icon name="call-outline"></ion-icon> Telefonszám: {{ order.shippingInfo.phoneNumber }}</li>
+                </ul>
+                <p><strong>Termékek:</strong></p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Termék neve</th>
+                      <th>Mennyiség</th>
+                      <th>Ár</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of order.items">
+                      <td>
+                        <ion-button fill="clear" color="primary" [routerLink]="['/products', item.productId]">
+                          {{ item.name }}
+                        </ion-button>
+                      </td>
+                      <td>{{ item.quantity }}</td>
+                      <td>{{ item.price | currency:'HUF' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ng-container>
+        <ng-template #noOrders>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="alert-circle-outline" color="medium"></ion-icon>
+                Nincsenek rendelések
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>Jelenleg nincsenek rendelései. Kérjük, nézzen vissza később, vagy fedezze fel termékeinket a rendelés leadásához.</p>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

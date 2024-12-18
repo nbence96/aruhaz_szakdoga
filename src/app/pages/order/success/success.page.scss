@@ -1,0 +1,34 @@
+.success-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.success-icon {
+  font-size: 100px;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+ion-button {
+  --background: #4caf50;
+  --background-hover: #45a049;
+  margin-top: 20px;
+  border-radius: 20px;
+}
