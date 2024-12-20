@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
@@ -8,7 +8,7 @@ import { UserService } from './services/user.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   loggedInUser?: firebase.default.User | null;
   loggedInUserRole?: string | null;
 

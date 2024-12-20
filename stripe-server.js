@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 let validTokens = new Set();
 
-const tokenExpiryTime = 10 * 60 * 1000; // 10 perc
+const tokenExpiryTime = 2 * 60 * 1000; // 10 perc
 
 function generateToken() {
   const token = crypto.randomBytes(16).toString('hex');

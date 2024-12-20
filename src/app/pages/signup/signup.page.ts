@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
 })
-export class SignupPage implements OnInit {
+export class SignupPage{
   isToastOpen = false;
   toastMessage = "";
 
@@ -22,8 +22,6 @@ export class SignupPage implements OnInit {
   });
   
   constructor(private authService: AuthService,private router: Router,private userService: UserService) { }
-
-  ngOnInit() {}
 
   setOpen(isOpen: boolean) {
     this.isToastOpen = isOpen;

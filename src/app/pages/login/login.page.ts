@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage{
   isToastOpen = false;
 
   form: FormGroup = new FormGroup({
@@ -18,8 +18,6 @@ export class LoginPage implements OnInit {
   });
 
   constructor(private router: Router, private authService: AuthService) { }
-
-  ngOnInit() {}
 
   setOpen(isOpen: boolean) {
     this.isToastOpen = isOpen;

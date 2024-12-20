@@ -25,7 +25,7 @@ export class CancelPage implements OnInit {
   }
 
   validateToken(token: string) {
-    this.http.post<{ valid: boolean }>('http://localhost:3000/validate-token', { token })
+    this.http.post<{ valid: boolean }>('https://us-central1-iruhabolt.cloudfunctions.net/validateToken', { token })
       .subscribe(response => {
         if (response.valid) {
           this.deleteOrder(token);

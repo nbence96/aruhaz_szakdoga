@@ -24,7 +24,7 @@ export class ChatPage implements OnInit {
 
   async sendChatPrompt(prompt: string): Promise<string> {
     try {
-      const response = await this.http.post<{ response: string }>('http://localhost:3000/gemini-ai', { prompt }).toPromise();
+      const response = await this.http.post<{ response: string }>('https://us-central1-iruhabolt.cloudfunctions.net/geminiAiPrompt', { prompt }).toPromise();
       return response?.response || 'Error: Could not get a response from the server.';
     } catch (error) {
       console.error('Error sending chat prompt:', error);

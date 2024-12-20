@@ -81,7 +81,7 @@ export class OrderPage implements OnInit {
         console.error('Error creating order:', error);
       });
     } else {
-      this.http.post('http://localhost:3000/create-checkout-session', {
+      this.http.post('https://us-central1-iruhabolt.cloudfunctions.net/stripeCheckout', {
         items: this.orderItems.map(item => ({
           name: item.name,
           price: item.price,
