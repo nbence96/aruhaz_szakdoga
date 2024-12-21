@@ -29,9 +29,10 @@ export class HomePage implements OnInit {
     category: '',
     priceRange: { lower: 0, upper: 10000 },
     size: [],
-    color: ''
+    color: '',
+    type: ''
   };
-  sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
   selectedSize: { [productId: string]: string } = {};
 
   constructor(
@@ -60,6 +61,8 @@ export class HomePage implements OnInit {
   }
 
   applyFilters() {
+    const previousCriteria = { ...this.searchCriteria }; // Store previous criteria
+
     this.products$!.subscribe(products => {
       console.log('Applying filters:', this.searchCriteria);
       this.filteredProducts = products.filter(product => {
@@ -68,13 +71,25 @@ export class HomePage implements OnInit {
         const matchesPrice = product.price >= this.searchCriteria.priceRange.lower && product.price <= this.searchCriteria.priceRange.upper;
         const matchesSize = this.searchCriteria.size.length === 0 || this.searchCriteria.size.some(size => product.stock[size] > 0);
         const matchesColor = !this.searchCriteria.color || product.color.toLowerCase().includes(this.searchCriteria.color.toLowerCase());
+        const matchesType = !this.searchCriteria.type || product.type === this.searchCriteria.type;
 
-        return matchesName && matchesCategory && matchesPrice && matchesSize && matchesColor;
+        return matchesName && matchesCategory && matchesPrice && matchesSize && matchesColor && matchesType;
       });
       console.log('Filtered products:', this.filteredProducts);
-    });
 
-    this.toggleAccordion();
+      // Check if any criteria other than type has changed
+      const hasOtherCriteriaChanged = 
+        previousCriteria.name !== this.searchCriteria.name ||
+        previousCriteria.category !== this.searchCriteria.category ||
+        previousCriteria.priceRange.lower !== this.searchCriteria.priceRange.lower ||
+        previousCriteria.priceRange.upper !== this.searchCriteria.priceRange.upper ||
+        previousCriteria.size.length !== this.searchCriteria.size.length ||
+        previousCriteria.color !== this.searchCriteria.color;
+
+      if (hasOtherCriteriaChanged) {
+        this.toggleAccordion(); // Toggle accordion if other criteria have changed
+      }
+    });
   }
 
   toggleAccordion() {

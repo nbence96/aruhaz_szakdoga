@@ -20,10 +20,12 @@
         <ion-label>Sizes:</ion-label>
         <div class="chips">
           <ion-chip
-            *ngFor="let size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']"
-            [color]="product!.size === size ? 'primary' : 'medium'"
-            [disabled]="product!.stock[size] === 0"
-            (click)="product!.size = size">
+            *ngFor="let size of getAvailableSizes(product)"
+            [color]="product.stock[size] > 0 ? 'primary' : 'medium'"
+            [disabled]="product.stock[size] === 0"
+            [outline]="product.stock[size] > 0 && selectedSize[product.id] !== size"
+            (click)="selectSize(product, size)"
+            [class.selected]="selectedSize[product.id] === size">
             {{ size }}
           </ion-chip>
         </div>
@@ -33,7 +35,7 @@
 
       <div *ngIf="loggedInUserRole === 'admin'" class="stock-chips">
         <ion-chip
-          *ngFor="let size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']"
+          *ngFor="let size of getAvailableSizes(product)"
           [color]="product!.stock[size] > 0 ? 'success' : 'danger'"
           [disabled]="product!.stock[size] === 0">
           <ion-label>
@@ -49,7 +51,7 @@
     </div>
 
     <div class="product-actions">
-      <ion-button expand="block" fill="clear" (click)="showConfirmationModal(product, 'buy')" [disabled]="!loggedInUser">
+      <ion-button expand="block" fill="clear" (click)="showConfirmationModal(product, 'buy')" [disabled]="!loggedInUser || !selectedSize">
         <ion-icon name="cart"></ion-icon>
       </ion-button>
 

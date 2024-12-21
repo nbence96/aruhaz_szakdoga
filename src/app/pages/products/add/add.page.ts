@@ -30,6 +30,7 @@ export class AddPage implements OnInit {
       description: ['', Validators.required],
       price: [0, Validators.required],
       category: ['', Validators.required],
+      type: ['', Validators.required],
       color: ['', Validators.required],
       imageUrl: ['', Validators.required],
       stock: this.fb.group({

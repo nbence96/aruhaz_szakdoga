@@ -32,6 +32,15 @@
       </ion-item>
 
       <ion-item>
+        <ion-label position="stacked">Típus</ion-label>
+        <ion-select formControlName="type" required>
+          <ion-select-option value="ferfi">Férfi</ion-select-option>
+          <ion-select-option value="noi">Női</ion-select-option>
+          <ion-select-option value="gyermek">Gyermek</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
         <ion-label position="stacked">Szín</ion-label>
         <ion-input formControlName="color" required></ion-input>
       </ion-item>

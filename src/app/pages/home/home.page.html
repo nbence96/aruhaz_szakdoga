@@ -8,6 +8,16 @@
 </ion-header>
 
 <ion-content justify-content-center align-items-center>
+  <ion-item>
+    <ion-label>Termék típusa</ion-label>
+    <ion-select [(ngModel)]="searchCriteria.type" (ionChange)="applyFilters()">
+      <ion-select-option value="">Összes</ion-select-option>
+      <ion-select-option value="ferfi">Férfi</ion-select-option>
+      <ion-select-option value="noi">Női</ion-select-option>
+      <ion-select-option value="gyermek">Gyermek</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-accordion-group>
     <ion-accordion value="filters" #filtersAccordion>
       <ion-item slot="header">
@@ -15,17 +25,20 @@
       </ion-item>
       <div class="search-filters" slot="content">
         <ion-item>
-          <ion-label position="floating">Termék neve</ion-label>
+          <ion-label position="stacked">Termék neve</ion-label>
           <ion-input [(ngModel)]="searchCriteria.name"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Kategória</ion-label>
+          <ion-label position="stacked">Kategória</ion-label>
           <ion-input [(ngModel)]="searchCriteria.category"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Árkategória</ion-label>
+          <ion-label position="stacked">Árkategória</ion-label>
+          <ion-label>{{ searchCriteria.priceRange.lower }} HUF</ion-label>
+          <ion-label>-</ion-label>
+          <ion-label>{{ searchCriteria.priceRange.upper }} HUF</ion-label>
           <ion-range dualKnobs="true" [pin]="true" [(ngModel)]="searchCriteria.priceRange" min="0" max="10000" step="100">
             <ion-label slot="start">0</ion-label>
             <ion-label slot="end">10000</ion-label>
@@ -33,14 +46,14 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Méret</ion-label>
+          <ion-label position="stacked">Méret</ion-label>
           <ion-select [(ngModel)]="searchCriteria.size" multiple="true">
             <ion-select-option *ngFor="let size of sizes" [value]="size">{{ size }}</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Szín</ion-label>
+          <ion-label position="stacked">Szín</ion-label>
           <ion-input [(ngModel)]="searchCriteria.color"></ion-input>
         </ion-item>
 
