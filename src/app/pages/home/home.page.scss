@@ -33,8 +33,7 @@ ion-card {
   }
 
   .price-separator {
-    display: flex;
-    justify-content: center;
+    max-width: fit-content;
   }
 
   .first-pricerange{
