@@ -32,4 +32,11 @@ ion-card {
     font-size: 25px;
   }
 
-  
+  .price-separator {
+    display: flex;
+    justify-content: center;
+  }
+
+  .first-pricerange{
+    max-width: fit-content;
+  }

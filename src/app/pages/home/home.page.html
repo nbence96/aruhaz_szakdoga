@@ -36,8 +36,8 @@
 
         <ion-item>
           <ion-label position="stacked">Árkategória</ion-label>
-          <ion-label>{{ searchCriteria.priceRange.lower }} HUF</ion-label>
-          <ion-label>-</ion-label>
+          <ion-label class="first-pricerange">{{ searchCriteria.priceRange.lower }} HUF</ion-label>
+          <ion-label class="price-separator">-</ion-label>
           <ion-label>{{ searchCriteria.priceRange.upper }} HUF</ion-label>
           <ion-range dualKnobs="true" [pin]="true" [(ngModel)]="searchCriteria.priceRange" min="0" max="10000" step="100">
             <ion-label slot="start">0</ion-label>

@@ -24,12 +24,16 @@ export class OrdersPage implements OnInit {
   loadOrders() {
     if (this.userRole === 'admin') {
       this.orderService.getAllOrders().subscribe(orders => {
-        this.orders = orders.map(order => this.convertTimestamps(order));
+        this.orders = orders
+          .map(order => this.convertTimestamps(order))
+          .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
       });
     } else {
       this.userService.getUserId().subscribe(userId => {
         this.orderService.getOrdersByUserId(userId).subscribe(orders => {
-          this.orders = orders.map(order => this.convertTimestamps(order));
+          this.orders = orders
+            .map(order => this.convertTimestamps(order))
+            .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
         });
       });
     }
