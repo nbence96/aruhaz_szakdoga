@@ -23,7 +23,7 @@
             *ngFor="let size of getAvailableSizes(product)"
             [color]="product.stock[size] > 0 ? 'primary' : 'medium'"
             [disabled]="product.stock[size] === 0"
-            [outline]="product.stock[size] > 0 && selectedSize[product.id] !== size"
+            [outline]="selectedSize[product.id] == size"
             (click)="selectSize(product, size)"
             [class.selected]="selectedSize[product.id] === size">
             {{ size }}

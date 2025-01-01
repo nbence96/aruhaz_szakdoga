@@ -16,10 +16,10 @@
     </div>
 
     <ion-footer>
-      <ion-toolbar>
+      <div class="footer-content">
         <ion-input [(ngModel)]="userInput" placeholder="Tedd fel a kérdésed..."></ion-input>
         <ion-button (click)="sendMessage()" [disabled]="isLoading">Küldés</ion-button>
-      </ion-toolbar>
+      </div>
     </ion-footer>
   </div>
 </ion-content>
