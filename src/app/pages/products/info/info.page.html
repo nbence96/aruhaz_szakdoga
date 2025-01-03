@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Termék részletei</ion-title>
   </ion-toolbar>
@@ -15,6 +16,8 @@
       <h1 class="product-name">{{ product.name }}</h1>
       <h2 class="product-category">{{ product.category }}</h2>
       <p class="product-price"><strong>{{ product.price }} HUF</strong></p>
+
+      <p class="product-description">{{ product.description }}</p>
 
       <div class="sizes-section">
         <ion-label>Sizes:</ion-label>
