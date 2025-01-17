@@ -13,33 +13,8 @@ export class ChatPage implements OnInit {
   userInput: string = '';
   products: Product[] = [];
   isLoading: boolean = false;
-
-  constructor(private http: HttpClient, private productStoreService: ProductStoreService) { }
-
-  ngOnInit() {
-    this.productStoreService.products$.subscribe(products => {
-      this.products = products;
-    });
-  }
-
-  async sendChatPrompt(prompt: string): Promise<string> {
-    try {
-      const response = await this.http.post<{ response: string }>('https://us-central1-iruhabolt.cloudfunctions.net/geminiAiPrompt', { prompt }).toPromise();
-      return response?.response || 'Error: Could not get a response from the server.';
-    } catch (error) {
-      console.error('Error sending chat prompt:', error);
-      return 'Error: Could not get a response from the server.';
-    }
-  }
-
-  async sendMessage() {
-    if (this.userInput.trim()) {
-      this.isLoading = true;
-      const productDetails = this.products.map(product => 
-        `Name: ${product.name}, Description: ${product.description}, Price: ${product.price}, Category: ${product.category}, Color: ${product.color}, Stock: ${JSON.stringify(product.stock)}, Created At: ${product.createdAt.toDate()}, Updated At: ${product.updatedAt.toDate()}`
-      ).join('; ');
-
-      const prompt = `Te egy intelligens webes asszisztens vagy, amely a weboldal felhasználóit segíti a termékekkel kapcsolatos információk megadásában, keresésben, valamint termékajánlásban. Célod, hogy gyors és pontos válaszokat adj a felhasználói kérdésekre, barátságos, professzionális, közvetlen és segítőkész hangnemben. Mindig állító mondatokkal válaszolj, és ne kérdezz vissza.
+  welcomeMessage: string = "Üdvözölje a felhasználót, aki nem feltétlen van bejelentkezve és mutatkozzon be";
+  prompt: string = `Te egy intelligens webes asszisztens vagy, amely a weboldal felhasználóit segíti a termékekkel kapcsolatos információk megadásában, keresésben, valamint termékajánlásban. Célod, hogy gyors és pontos válaszokat adj a felhasználói kérdésekre, barátságos, professzionális, közvetlen és segítőkész hangnemben. Mindig állító mondatokkal válaszolj, és ne kérdezz vissza.
 
       ### **Feladatod:**
       1. **Válaszolj a következő típusú kérdésekre:**
@@ -71,9 +46,36 @@ export class ChatPage implements OnInit {
       - Barátságos, professzionális, közvetlen és segítőkész.  
       - **Mindig állító mondatokkal válaszolj. Ne kérdezz vissza.**
 
-      A termékek adatai: ${productDetails}`;
+      A termékek adatai:`;
 
-      const fullMessage = `${prompt} ${this.userInput}`;
+  constructor(private http: HttpClient, private productStoreService: ProductStoreService) { }
+
+  async ngOnInit() {
+    this.productStoreService.products$.subscribe(products => {
+      this.products = products;
+    });
+    const aiWelcomeMessage = await this.sendChatPrompt(this.welcomeMessage + this.prompt + this.products);
+    this.messages.push(aiWelcomeMessage);
+  }
+
+  async sendChatPrompt(prompt: string): Promise<string> {
+    try {
+      const response = await this.http.post<{ response: string }>('https://us-central1-iruhabolt.cloudfunctions.net/geminiAiPrompt', { prompt }).toPromise();
+      return response?.response || 'Hiba, nem érkezett válasz a külső szerverről.';
+    } catch (error) {
+      console.error('Chat hibakezelés:', error);
+      return 'Hiba, nem érkezett válasz a külső szerverről.';
+    }
+  }
+
+  async sendMessage() {
+    if (this.userInput.trim()) {
+      this.isLoading = true;
+      const productDetails = this.products.map(product => 
+        `Name: ${product.name}, Description: ${product.description}, Price: ${product.price}, Category: ${product.category}, Color: ${product.color}, Stock: ${JSON.stringify(product.stock)}, Created At: ${product.createdAt.toDate()}, Updated At: ${product.updatedAt.toDate()}`
+      ).join('; ');
+
+      const fullMessage = `${this.prompt + productDetails} ${this.userInput}`;
 
       this.messages.push(this.userInput);
 
