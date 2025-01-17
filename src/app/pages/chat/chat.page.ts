@@ -47,6 +47,7 @@ export class ChatPage implements OnInit {
       - **Mindig állító mondatokkal válaszolj. Ne kérdezz vissza.**
 
       A termékek adatai:`;
+  chatHistory: string[] = [];
 
   constructor(private http: HttpClient, private productStoreService: ProductStoreService) { }
 
@@ -75,12 +76,14 @@ export class ChatPage implements OnInit {
         `Name: ${product.name}, Description: ${product.description}, Price: ${product.price}, Category: ${product.category}, Color: ${product.color}, Stock: ${JSON.stringify(product.stock)}, Created At: ${product.createdAt.toDate()}, Updated At: ${product.updatedAt.toDate()}`
       ).join('; ');
 
-      const fullMessage = `${this.prompt + productDetails} ${this.userInput}`;
+      const fullMessage = `${this.prompt + productDetails} ${this.userInput} Ezzel a felhasználóval ez a beszélgetésed folyt le eddig: ${this.chatHistory.join('\n')}`;
 
       this.messages.push(this.userInput);
+      this.chatHistory.push(this.userInput);
 
       const aiResponse = await this.sendChatPrompt(fullMessage);
       this.messages.push(aiResponse);
+      this.chatHistory.push(aiResponse);
 
       this.userInput = '';
       this.isLoading = false;
